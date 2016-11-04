@@ -8,7 +8,8 @@ CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))
 STATIC_DIR = os.path.join(CURRENT_DIR, 'static')
 
 # Change this if necessary
-FACE_CLASSIFIER = '/usr/local/Cellar/opencv/2.4.12/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml'
+# FACE_CLASSIFIER = '/usr/local/Cellar/opencv/2.4.12/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml'
+FACE_CLASSIFIER = '/usr/share/opencv/haarcascades/haarcascade_frontalface_default.xml'
 
 
 def detect_faces(data):
