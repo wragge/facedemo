@@ -31,9 +31,9 @@ CLASSIFIERS = [
 
 class FaceForm(FlaskForm):
     image = FileField('Your image', validators=[FileAllowed(['jpg', 'png'], 'Images only!')])
-    scale_factor = SelectField('Scale factor', choices=[(str(v), v) for v in [x / 10.0 for x in range(11, 16, 1)]])
+    scale_factor = SelectField('Scale factor', choices=[(str(v), v) for v in [1.05, 1.1, 1.15, 1.2, 1.25, 1.3, 1.35, 1.4]])
     min_neighbors = SelectField('Minimum Neighbors', choices=[(str(v), v) for v in range(1, 6, 1)])
-    min_size = SelectField('Minimum size', choices=[(str(v), v) for v in range(50, 250, 50)])
+    min_size = SelectField('Minimum size', choices=[(str(v), v) for v in [20, 50, 100, 150, 200]])
     classifier = SelectField('Classifier', choices=CLASSIFIERS)
     image_filename = HiddenField('Current image')
     image_path = HiddenField('Current image path')
