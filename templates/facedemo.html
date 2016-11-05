@@ -5,10 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Bootstrap 101 Template</title>
+    <title>Open CV Face detection demo</title>
 
     <!-- Bootstrap -->
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -22,7 +23,7 @@
   </head>
   <body>
     <div class="container">
-      <h1>Face detection demo</h1>
+      <h1 class="page-header">Face detection demo <small>using OpenCV</small></h1>
       <div class="row">
         <div class="col-md-8 img-cell">
           {% if not job_id %}
@@ -30,20 +31,43 @@
           {% endif %}
         </div>
         <div class="col-md-4">
+        <ul>
+        <li>Click <b>find faces</b> to apply the selected classifier to the image.</li>
+        <li>Try adjusting the settings below to see how this affects the results.</li>
+        <li>Try uploading your own picture.</li>
+        <li>Click reset to load another random test image.</li>
+        </ul>
+
         <form method="POST" action="/facedemo/" enctype="multipart/form-data">
           <div class="form-group">
             {{ form.csrf_token }}
             {{ form.scale_factor.label }} {{ form.scale_factor(class_="form-control") }}
             {{ form.min_neighbors.label }} {{ form.min_neighbors(class_="form-control") }}
             {{ form.min_size.label }} {{ form.min_size(class_="form-control") }}
+            {{ form.classifier.label }} {{ form.classifier(class_="form-control") }}
             {{ form.image.label }} {{ form.image(class_="form-control") }}
             {{ form.hidden_tag() }}
           </div>
           <input class="btn btn-primary" type="submit" value="Find faces">
+          <a class="btn btn-primary" href="/facedemo/">Reset</a>
         </form>
 
         </div>
       </div>
+      <div class="row">
+        <div class="col-md-8">
+        <h4>What is this for?</h4>
+          <p>I created this demo to make it easy for people to play around with face detection, and get an idea of what the various options in OpenCV do.</p>
+          <p>For an explanation of how face detection works using the Viola-Jones algorithm see this <a href="http://www.makematics.com/research/viola-jones/">interview with Adam Harvey</a>.</p>
+
+           <h4>What do these parameters mean?</h4>
+            <p>See this <a href="http://stackoverflow.com/questions/20801015/recommended-values-for-opencv-detectmultiscale-parameters">StackOverflow question</a> for a brief explanation.</p>
+        </div>
+
+      </div>
+      <footer>
+      Created by <a href="https://timsherratt.org">Tim Sherratt</a>.
+      </footer>
     </div>
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>

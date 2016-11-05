@@ -1,3 +1,5 @@
 *.pyc
 .DS_Store
 facedemo.sock
+facedemo.cfg
+facedemo_local.cfg

@@ -9,18 +9,18 @@ STATIC_DIR = os.path.join(CURRENT_DIR, 'static')
 
 # Change this if necessary
 # FACE_CLASSIFIER = '/usr/local/Cellar/opencv/2.4.12/share/OpenCV/haarcascades/haarcascade_frontalface_default.xml'
-FACE_CLASSIFIER = '/usr/share/opencv/haarcascades/haarcascade_frontalface_default.xml'
+# FACE_CLASSIFIER = '/usr/share/opencv/haarcascades/haarcascade_frontalface_default.xml'
+
+if 'home' in CURRENT_DIR:
+    CLASSIFIER_PATH = '/usr/share/opencv/haarcascades/'
+else:
+    CLASSIFIER_PATH = '/usr/local/Cellar/opencv/2.4.12/share/OpenCV/haarcascades/'
 
 
 def detect_faces(data):
-    filename, path, scale_factor, min_neighbors, min_size = data.split(' | ')
+    filename, path, scale_factor, min_neighbors, min_size, classifier = data.split(' | ')
     newfile = '{}.jpg'.format(uuid.uuid4())
-    # resize image
-    # detect faces
-    # draw boxes
-    # save image
-    # return image url
-    face_cl = cv2.CascadeClassifier(FACE_CLASSIFIER)
+    face_cl = cv2.CascadeClassifier(os.path.join(CLASSIFIER_PATH, classifier))
     try:
         image = cv2.imread(os.path.join(STATIC_DIR, path, filename))
         oh, ow = image.shape[:2]

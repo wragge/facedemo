@@ -10,10 +10,23 @@ import random
 from process import detect_faces
 
 app = Flask(__name__)
-app.secret_key = '|\xd9]\xf4\x82\xe1+C\x16&?\x94\xa2\xf5J\xc6\xfa]\x9d\x81\xf3\x85P\xe5'
+app.config.from_pyfile('facedemo.cfg')
+try:
+    app.config.from_pyfile('facedemo_local.cfg')
+except IOError:
+    pass
 
 redis_conn = Redis()
 q = Queue('facedemo', connection=redis_conn)
+
+
+CLASSIFIERS = [
+    ('haarcascade_frontalface_default.xml', 'face (default)'),
+    ('haarcascade_frontalface_alt.xml', 'face (alternative)'),
+    ('haarcascade_eye.xml', 'eye'),
+    ('haarcascade_mcs_mouth.xml', 'mouth'),
+    ('haarcascade_frontalcatface_extended.xml', 'cat face')
+]
 
 
 class FaceForm(FlaskForm):
@@ -21,6 +34,7 @@ class FaceForm(FlaskForm):
     scale_factor = SelectField('Scale factor', choices=[(str(v), v) for v in [x / 10.0 for x in range(11, 16, 1)]])
     min_neighbors = SelectField('Minimum Neighbors', choices=[(str(v), v) for v in range(1, 6, 1)])
     min_size = SelectField('Minimum size', choices=[(str(v), v) for v in range(50, 250, 50)])
+    classifier = SelectField('Classifier', choices=CLASSIFIERS)
     image_filename = HiddenField('Current image')
     image_path = HiddenField('Current image path')
 
@@ -47,7 +61,7 @@ def detect_face():
             filename = choose_test()
         form.image_filename.data = filename
         form.image_path.data = path
-        job = q.enqueue(detect_faces, ' | '.join([filename, path, form.scale_factor.data, form.min_neighbors.data, form.min_size.data]))
+        job = q.enqueue(detect_faces, ' | '.join([filename, path, form.scale_factor.data, form.min_neighbors.data, form.min_size.data, form.classifier.data]))
         return render_template('facedemo.html', form=form, job_id=job.id, path=path, filename=filename)
     else:
         filename = choose_test()
